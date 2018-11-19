@@ -13,7 +13,7 @@ public class TabPagerAdapter extends FragmentPagerAdapter
 
 	private RateFragment rateFragment;
 
-	TabPagerAdapter(FragmentManager fm)
+	public TabPagerAdapter(FragmentManager fm)
 	{
 		super(fm);
 
