@@ -3,35 +3,122 @@ package com.crow.currencyconverter.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.crow.currencyconverter.Class.Converter;
+import com.crow.currencyconverter.Enums.ECurrencies;
 import com.crow.currencyconverter.R;
 
 public class ConvertFragment extends Fragment
 {
+	private View view;
+
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.fragment_convert, container, false);
+		view = inflater.inflate(R.layout.fragment_convert, container, false);
 
 		// Simple error checking and to get rid of warnings
 		if (getContext() == null)
 			return view;
-		// Create array adapter from out strings
+
+		// Get spinners
+		final Spinner spinner0 = view.findViewById(R.id.spinner_currencies);
+		final Spinner spinner1 = view.findViewById(R.id.spinner_currencies_alt);
+
+		// Create array adapter from strings
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.currencies, android.R.layout.simple_spinner_item);
 
 		// Specify layout
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		// Apply adapter to spinners
-		((Spinner) view.findViewById(R.id.spinner_currencies)).setAdapter(adapter);
-		((Spinner) view.findViewById(R.id.spinner_currencies_alt)).setAdapter(adapter);
+		spinner0.setAdapter(adapter);
+		spinner1.setAdapter(adapter);
+
+		// Set input listener
+		((EditText) view.findViewById(R.id.edit_amount)).addTextChangedListener(new TextWatcher()
+		{
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after)
+			{
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count)
+			{
+			}
+
+			@Override
+			public void afterTextChanged(Editable s)
+			{
+				update();
+			}
+		});
+
+		AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener()
+		{
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+			{
+				update();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent)
+			{
+			}
+		};
+
+		// Set
+		spinner0.setOnItemSelectedListener(spinnerListener);
+		spinner1.setOnItemSelectedListener(spinnerListener);
+
+		// Test Button
+		view.findViewById(R.id.button_swap).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v)
+			{
+				// TODO: Swap
+			}
+		});
 
 		return view;
+	}
+
+	// Update the currency values
+	private void update()
+	{
+		// Get the from value
+		String fromAmountString = ((EditText) view.findViewById(R.id.edit_amount)).getText().toString();
+
+		// Check if it was emptied
+		if (fromAmountString.isEmpty())
+		{
+			// Empty result
+			((EditText) view.findViewById(R.id.edit_amount_alt)).setText(null);
+
+			// Return since there's no need to convert it
+			return;
+		}
+
+		// Get the amount 'from'
+		float fromAmount = Float.parseFloat(fromAmountString);
+
+		// Get selected currencies
+		ECurrencies fromCurrency = Converter.fromString(((Spinner) view.findViewById(R.id.spinner_currencies)).getSelectedItem().toString());
+		ECurrencies toCurrency   = Converter.fromString(((Spinner) view.findViewById(R.id.spinner_currencies_alt)).getSelectedItem().toString());
+
+		// Update 'to' label
+		((EditText) view.findViewById(R.id.edit_amount_alt)).setText(String.format("%.2f", Converter.convert(fromCurrency, toCurrency, fromAmount)));
 	}
 }
