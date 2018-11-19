@@ -7,11 +7,20 @@
     tools:context=".Fragment.ConvertFragment"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edit_amount"
+    <TextView
+        android:id="@+id/text_from"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="From"/>
+
+    <EditText
+        android:id="@+id/edit_amount"
+        android:labelFor="@+id/text_from"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
@@ -26,6 +35,7 @@
         android:layout_marginTop="16dp"/>
 
     <ImageButton
+        android:id="@+id/button_swap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -35,11 +45,19 @@
         android:background="@color/colorBackground"
         android:contentDescription="@string/description_compare_arrows"/>
 
+    <TextView
+        android:id="@+id/text_to"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="To"/>
+
     <EditText
         android:id="@+id/edit_amount_alt"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
