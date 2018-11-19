@@ -8,7 +8,13 @@
     <!-- Title of second tab -->
     <string name="tab_text_2">Rates</string>
 
-    <!-- Currencies used for the spinner -->
+    <!-- Default text for amount values -->
+    <string name="default_amount">0.00</string>
+
+    <!-- Image description for 'compare arrows' image -->
+    <string name="description_compare_arrows">Compare arrows</string>
+
+    <!-- Currencies used for the spinners -->
     <string-array name="currencies">
         <item>EUR - Euro</item>
         <item>SEK - Swedish Krona</item>
