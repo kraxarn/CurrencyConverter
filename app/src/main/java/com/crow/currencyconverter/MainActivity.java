@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 
+import com.crow.currencyconverter.Class.TabPagerAdapter;
+
 public class MainActivity extends AppCompatActivity
 {
 
