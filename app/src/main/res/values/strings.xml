@@ -1,9 +1,21 @@
 <resources>
+    <!-- App name shown in tab bar -->
     <string name="app_name">Currency Converter</string>
-    <string name="tab_text_1">Convert</string>
-    <string name="tab_text_2">Rates</string>
-    <string name="section_format">Hello World from section: %1$d</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Title of first tab -->
+    <string name="tab_text_1">Convert</string>
+
+    <!-- Title of second tab -->
+    <string name="tab_text_2">Rates</string>
+
+    <!-- Currencies used for the spinner -->
+    <string-array name="currencies">
+        <item>EUR - Euro</item>
+        <item>SEK - Swedish Krona</item>
+        <item>USD - US Dollar</item>
+        <item>GBP - Great British Pound</item>
+        <item>CNY - Chinese Yuan</item>
+        <item>JPY - Japanese Yen</item>
+        <item>KRW - South Korean Won</item>
+    </string-array>
 </resources>
