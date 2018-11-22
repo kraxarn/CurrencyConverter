@@ -1,6 +1,12 @@
 package com.crow.currencyconverter.Class;
 
+import android.content.Context;
+
 import com.crow.currencyconverter.Enums.ECurrencies;
+import com.crow.currencyconverter.R;
+import com.crow.currencyconverter.Rate.RateEntry;
+
+import java.util.ArrayList;
 
 public class Converter
 {
@@ -80,5 +86,24 @@ public class Converter
 
 		// If not returned yet, something went wrong
 		throw new IllegalStateException("Unknown currency");
+	}
+
+	public static ArrayList<RateEntry> getRates(Context context)
+	{
+		// Get all currencies saved in strings.xml
+		String[] currencies = context.getResources().getStringArray(R.array.currencies);
+
+		// Create list for our entries
+		ArrayList<RateEntry> entries = new ArrayList<>();
+
+		// Convert strings to entries
+		for (String currency : currencies)
+		{
+			String[] parts = currency.split(" - ");
+			entries.add(new RateEntry(parts[0], 0, parts[1]));
+		}
+
+		// Return new entries
+		return entries;
 	}
 }

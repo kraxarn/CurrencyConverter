@@ -19,6 +19,6 @@ public class RateEntry
 
 	public String getRate()
 	{
-		return (rate > 0 ? "+" : "") + String.format(Locale.getDefault(), "%.2f%%", rate);
+		return rate < 0.01f ? "<0.01" : String.format(Locale.getDefault(), "%.2f", rate);
 	}
 }
