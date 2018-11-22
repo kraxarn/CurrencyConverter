@@ -44,7 +44,7 @@ public class RateFragment extends Fragment
 
 		// Set up recycler view
 		viewRates = view.findViewById(R.id.view_rates);
-		adapter = new RateEntriesAdapter(rates, getContext());
+		adapter = new RateEntriesAdapter(rates);
 		viewRates.setAdapter(adapter);
 		viewRates.setLayoutManager(new LinearLayoutManager(getContext()));
 		viewRates.setHasFixedSize(true); // TODO: ?

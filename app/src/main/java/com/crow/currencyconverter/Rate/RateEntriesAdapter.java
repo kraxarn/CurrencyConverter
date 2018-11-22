@@ -1,6 +1,5 @@
 package com.crow.currencyconverter.Rate;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,17 +16,9 @@ public class RateEntriesAdapter extends RecyclerView.Adapter<RateEntriesViewHold
 {
 	private ArrayList<RateEntry> rateEntries;
 
-	private Context context;
-
-	public RateEntriesAdapter(ArrayList<RateEntry> rateEntries, Context context)
+	public RateEntriesAdapter(ArrayList<RateEntry> rateEntries)
 	{
 		this.rateEntries = rateEntries;
-		this.context     = context;
-	}
-
-	public Context getContext()
-	{
-		return context;
 	}
 
 	@NonNull
