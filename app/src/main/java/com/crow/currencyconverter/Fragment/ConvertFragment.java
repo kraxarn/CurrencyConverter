@@ -88,7 +88,25 @@ public class ConvertFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-				// TODO: Swap
+				// From widgets
+				EditText editAmount = view.findViewById(R.id.edit_amount);
+				Spinner spinnerCurrencies = view.findViewById(R.id.spinner_currencies);
+
+				// To widgets
+				EditText editAmountAlt = view.findViewById(R.id.edit_amount_alt);
+				Spinner spinnerCurrenciesAlt = view.findViewById(R.id.spinner_currencies_alt);
+
+				// Save from values
+				String fromAmount = editAmount.getText().toString();
+				int fromCurrency  = spinnerCurrencies.getSelectedItemPosition();
+
+				// Replace from with to
+				editAmount.setText(editAmountAlt.getText());
+				spinnerCurrencies.setSelection(spinnerCurrenciesAlt.getSelectedItemPosition());
+
+				/// Replace to with old from
+				editAmountAlt.setText(fromAmount);
+				spinnerCurrenciesAlt.setSelection(fromCurrency);
 			}
 		});
 
