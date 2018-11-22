@@ -25,7 +25,7 @@ public class Converter
 			return amount;
 
 		// Base EUR
-		float base = convert(from, ECurrencies.EUR, amount);
+		float base = from == ECurrencies.EUR ? amount : convertToEur(from, amount);
 
 		// Return converted
 		switch (to)
@@ -37,6 +37,24 @@ public class Converter
 			case CNY: return base * cny;
 			case JPY: return base * jpy;
 			case KRW: return base * krw;
+		}
+
+		// If not returned yet, something went wrong
+		throw new IllegalStateException("Unknown currency");
+	}
+
+	private static float convertToEur(ECurrencies from, float amount)
+	{
+		// Return converted
+		switch (from)
+		{
+			case EUR: return amount / eur;
+			case SEK: return amount / sek;
+			case USD: return amount / usd;
+			case GBP: return amount / gbp;
+			case CNY: return amount / cny;
+			case JPY: return amount / jpy;
+			case KRW: return amount / krw;
 		}
 
 		// If not returned yet, something went wrong
