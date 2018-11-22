@@ -17,6 +17,8 @@ import com.crow.currencyconverter.Class.Converter;
 import com.crow.currencyconverter.Enums.ECurrencies;
 import com.crow.currencyconverter.R;
 
+import java.util.Locale;
+
 public class ConvertFragment extends Fragment
 {
 	private View view;
@@ -137,6 +139,6 @@ public class ConvertFragment extends Fragment
 		ECurrencies toCurrency   = Converter.fromString(((Spinner) view.findViewById(R.id.spinner_currencies_alt)).getSelectedItem().toString());
 
 		// Update 'to' label
-		((EditText) view.findViewById(R.id.edit_amount_alt)).setText(String.format("%.2f", Converter.convert(fromCurrency, toCurrency, fromAmount)));
+		((EditText) view.findViewById(R.id.edit_amount_alt)).setText(String.format(Locale.getDefault(), "%.2f", Converter.convert(fromCurrency, toCurrency, fromAmount)));
 	}
 }
