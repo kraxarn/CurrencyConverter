@@ -1,7 +1,6 @@
 package com.crow.currencyconverter.Rate;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.crow.currencyconverter.Enums.ECurrencies;
 import com.crow.currencyconverter.R;
 
 import java.util.ArrayList;
@@ -60,12 +60,6 @@ public class RateEntriesAdapter extends RecyclerView.Adapter<RateEntriesViewHold
 
 		TextView textRate = holder.textRate;
 		textRate.setText(entry.getRate());
-		/*
-			Red:	#f44336
-			Green:	#4caf50
-			Yellow:	#ffeb3b
-		 */
-		textRate.setTextColor(Color.parseColor(entry.rate < 0 ? "#f44336" : entry.rate > 0 ? "#4caf50" : "#ffeb3b"));
 
 		TextView textCurrency = holder.textCurrency;
 		textCurrency.setText(entry.currency);
@@ -75,5 +69,18 @@ public class RateEntriesAdapter extends RecyclerView.Adapter<RateEntriesViewHold
 	public int getItemCount()
 	{
 		return rateEntries.size();
+	}
+
+	public void setEntryRate(ECurrencies currency, float rate)
+	{
+		for (int i = 0; i < rateEntries.size(); i++)
+		{
+			if (rateEntries.get(i).icon.contains(currency.name()))
+			{
+				rateEntries.get(i).rate = rate;
+				notifyItemChanged(i);
+				return;
+			}
+		}
 	}
 }
