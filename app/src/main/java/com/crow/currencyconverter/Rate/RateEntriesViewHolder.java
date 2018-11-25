@@ -6,15 +6,15 @@ import android.widget.TextView;
 
 import com.crow.currencyconverter.R;
 
-public class RateEntriesViewHolder extends RecyclerView.ViewHolder
+class RateEntriesViewHolder extends RecyclerView.ViewHolder
 {
-	public TextView textIcon;
+	final TextView textIcon;
 
-	public TextView textRate;
+	final TextView textRate;
 
-	public TextView textCurrency;
+	final TextView textCurrency;
 
-	public RateEntriesViewHolder(View itemView)
+	RateEntriesViewHolder(View itemView)
 	{
 		super(itemView);
 
