@@ -24,11 +24,6 @@ import java.util.Objects;
 
 public class RateFragment extends Fragment
 {
-	// For our recycler view
-	private ArrayList<RateEntry> rates;
-
-	private RecyclerView viewRates;
-
 	private RateEntriesAdapter adapter;
 
 	private View view;
@@ -40,10 +35,11 @@ public class RateFragment extends Fragment
 		view = inflater.inflate(R.layout.fragment_rate, container, false);
 
 		// Get rates (require context)
-		rates = Converter.getRates(Objects.requireNonNull(getContext()));
+		// For our recycler view
+		ArrayList<RateEntry> rates = Converter.getRates(Objects.requireNonNull(getContext()));
 
 		// Set up recycler view
-		viewRates = view.findViewById(R.id.view_rates);
+		RecyclerView viewRates = view.findViewById(R.id.view_rates);
 		adapter = new RateEntriesAdapter(rates);
 		viewRates.setAdapter(adapter);
 		viewRates.setLayoutManager(new LinearLayoutManager(getContext()));
