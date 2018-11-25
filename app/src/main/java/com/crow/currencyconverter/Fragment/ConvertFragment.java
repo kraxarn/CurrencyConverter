@@ -1,5 +1,6 @@
 package com.crow.currencyconverter.Fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -135,5 +137,12 @@ public class ConvertFragment extends Fragment
 
 		// Update 'to' label
 		((EditText) view.findViewById(R.id.edit_amount_alt)).setText(String.format(Locale.getDefault(), "%.2f", Converter.convert(fromCurrency, toCurrency, fromAmount)));
+	}
+
+	// Highlights 'from amount'
+	public void focusAmount()
+	{
+		if (getActivity() != null)
+			((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(view.findViewById(R.id.edit_amount), InputMethodManager.SHOW_IMPLICIT);
 	}
 }

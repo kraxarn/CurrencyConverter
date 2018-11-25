@@ -42,4 +42,11 @@ public class TabPagerAdapter extends FragmentPagerAdapter
 		// Page total
 		return 2;
 	}
+
+	public void onPageSelected(int i)
+	{
+		// If convert was selected, highlight amount
+		if (i == 0)
+			convertFragment.focusAmount();
+	}
 }
