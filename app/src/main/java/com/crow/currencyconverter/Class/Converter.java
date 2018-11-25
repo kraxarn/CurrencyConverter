@@ -16,13 +16,13 @@ public class Converter
 	 */
 
 	// Rates from EUR
-	private static float eur = 1f;
-	private static float sek = 10.28f;
-	private static float usd = 1.14f;
-	private static float gbp = 0.89f;
-	private static float cny = 7.92f;
-	private static float jpy = 128.79f;
-	private static float krw = 1279.52f;
+	private static final float eur = 1f;
+	private static final float sek = 10.28f;
+	private static final float usd = 1.14f;
+	private static final float gbp = 0.89f;
+	private static final float cny = 7.92f;
+	private static final float jpy = 128.79f;
+	private static final float krw = 1279.52f;
 
 	public static float convert(ECurrencies from, ECurrencies to, float amount)
 	{

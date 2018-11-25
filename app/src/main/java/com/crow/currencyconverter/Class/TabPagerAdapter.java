@@ -9,9 +9,9 @@ import com.crow.currencyconverter.Fragment.RateFragment;
 
 public class TabPagerAdapter extends FragmentPagerAdapter
 {
-	private ConvertFragment convertFragment;
+	private final ConvertFragment convertFragment;
 
-	private RateFragment rateFragment;
+	private final RateFragment rateFragment;
 
 	public TabPagerAdapter(FragmentManager fm)
 	{

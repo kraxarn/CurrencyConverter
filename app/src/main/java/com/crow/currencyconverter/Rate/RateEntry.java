@@ -4,11 +4,11 @@ import java.util.Locale;
 
 public class RateEntry
 {
-	public String icon;
+	public final String icon;
 
 	public float rate;
 
-	public String currency;
+	public final String currency;
 
 	public RateEntry(String icon, float rate, String currency)
 	{

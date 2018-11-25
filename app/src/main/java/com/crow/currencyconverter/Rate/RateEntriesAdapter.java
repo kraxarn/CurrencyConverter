@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class RateEntriesAdapter extends RecyclerView.Adapter<RateEntriesViewHolder>
 {
-	private ArrayList<RateEntry> rateEntries;
+	private final ArrayList<RateEntry> rateEntries;
 
 	public RateEntriesAdapter(ArrayList<RateEntry> rateEntries)
 	{
