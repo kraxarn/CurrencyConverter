@@ -1,6 +1,7 @@
 package com.crow.currencyconverter;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +21,10 @@ public class MainActivity extends AppCompatActivity
 		// Load main activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		// Set navigation bar color
+		if (Build.VERSION.SDK_INT >= 21)
+			getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimary));
 
 		// Load toolbar (title and tabs)
 		Toolbar toolbar = findViewById(R.id.toolbar);
