@@ -47,7 +47,9 @@ public class RateFragment extends Fragment
 		adapter = new RateEntriesAdapter(rates);
 		viewRates.setAdapter(adapter);
 		viewRates.setLayoutManager(new LinearLayoutManager(getContext()));
-		viewRates.setHasFixedSize(true); // TODO: ?
+
+		// Improves performance (when we don't change the size of the recycler view)
+		viewRates.setHasFixedSize(true);
 
 		// Set up spinner (identical to convert fragment)
 		Spinner spinnerBase = view.findViewById(R.id.spinner_base);
