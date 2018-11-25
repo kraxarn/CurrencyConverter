@@ -14,7 +14,7 @@
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="From"/>
+        android:text="@string/from"/>
 
     <EditText
         android:id="@+id/edit_amount"
@@ -52,7 +52,7 @@
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="To"/>
+        android:text="@string/to"/>
 
     <EditText
         android:id="@+id/edit_amount_alt"

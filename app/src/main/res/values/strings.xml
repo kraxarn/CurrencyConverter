@@ -14,6 +14,18 @@
     <!-- Image description for 'compare arrows' image -->
     <string name="description_compare_arrows">Compare arrows</string>
 
+    <!-- From (currency) -->
+    <string name="from">From</string>
+
+    <!-- To (currency( -->
+    <string name="to">To</string>
+
+    <!-- Base (for rates) -->
+    <string name="base">Base</string>
+
+    <!-- Rates display -->
+    <string name="rates">Rates</string>
+
     <!-- Currencies used for the spinners -->
     <string-array name="currencies">
         <item>EUR - Euro</item>
