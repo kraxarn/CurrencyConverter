@@ -1,11 +1,14 @@
 package com.crow.currencyconverter.Fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +26,8 @@ import java.util.Locale;
 
 public class ConvertFragment extends Fragment
 {
+	private SharedPreferences preferences;
+
 	private View view;
 
 	@Override
@@ -30,6 +35,9 @@ public class ConvertFragment extends Fragment
 	{
 		// Inflate the layout for this fragment
 		view = inflater.inflate(R.layout.fragment_convert, container, false);
+
+		// Get preferences
+		preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
 		// Simple error checking and to get rid of warnings
 		if (getContext() == null)
@@ -48,6 +56,10 @@ public class ConvertFragment extends Fragment
 		// Apply adapter to spinners
 		spinner0.setAdapter(adapter);
 		spinner1.setAdapter(adapter);
+
+		// Set value from preferences
+		spinner0.setSelection(preferences.getInt("currency_from", 0));
+		spinner1.setSelection(preferences.getInt("currency_to",   0));
 
 		// Set input listener
 		((EditText) view.findViewById(R.id.edit_amount)).addTextChangedListener(new TextWatcher()
@@ -144,5 +156,21 @@ public class ConvertFragment extends Fragment
 	{
 		if (getActivity() != null)
 			((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(view.findViewById(R.id.edit_amount), InputMethodManager.SHOW_IMPLICIT);
+	}
+
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+
+		// Get editor to save preferences
+		SharedPreferences.Editor editor = preferences.edit();
+
+		// Put used from/to currencies
+		editor.putInt("currency_from", ((Spinner) view.findViewById(R.id.spinner_currencies)).getSelectedItemPosition());
+		editor.putInt("currency_to",   ((Spinner) view.findViewById(R.id.spinner_currencies_alt)).getSelectedItemPosition());
+
+		// Save changes in the background
+		editor.apply();
 	}
 }
