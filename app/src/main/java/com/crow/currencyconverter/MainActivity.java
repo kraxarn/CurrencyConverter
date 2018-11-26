@@ -10,8 +10,10 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.crow.currencyconverter.Class.Converter;
+import com.crow.currencyconverter.Class.CountryLocator;
 import com.crow.currencyconverter.Class.TabPagerAdapter;
 
 public class MainActivity extends AppCompatActivity
@@ -71,8 +73,14 @@ public class MainActivity extends AppCompatActivity
 		viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 		tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
 
+		// Get request queue for requests
+		RequestQueue requestQueue = Volley.newRequestQueue(this);
+
 		// Update currency values
 		// TODO: Check a timestamp and only update if 24h> old
-		Converter.refresh(this, Volley.newRequestQueue(this));
+		Converter.refresh(this, requestQueue);
+
+		// Update country location
+		CountryLocator.refresh(requestQueue);
 	}
 }

@@ -18,12 +18,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.crow.currencyconverter.Class.Converter;
+import com.crow.currencyconverter.Class.CountryLocator;
 import com.crow.currencyconverter.Enums.ECurrencies;
+import com.crow.currencyconverter.Listener.LocationUpdatedListener;
 import com.crow.currencyconverter.R;
 
 import java.util.Locale;
 
-public class ConvertFragment extends Fragment
+public class ConvertFragment extends Fragment implements LocationUpdatedListener
 {
 	private SharedPreferences preferences;
 
@@ -120,6 +122,9 @@ public class ConvertFragment extends Fragment
 			spinner1.setSelection(fromCurrency);
 		});
 
+		// Add country event
+		CountryLocator.addListener(this);
+
 		return view;
 	}
 
@@ -171,5 +176,11 @@ public class ConvertFragment extends Fragment
 
 		// Save changes in the background
 		editor.apply();
+	}
+
+	@Override
+	public void onSetCurrency(ECurrencies currency)
+	{
+		((Spinner) view.findViewById(R.id.spinner_currencies)).setSelection(currency.ordinal());
 	}
 }
