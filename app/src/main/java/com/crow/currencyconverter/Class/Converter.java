@@ -1,10 +1,17 @@
 package com.crow.currencyconverter.Class;
 
+import android.app.AlertDialog;
 import android.content.Context;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
 import com.crow.currencyconverter.Enums.ECurrencies;
 import com.crow.currencyconverter.R;
 import com.crow.currencyconverter.Rate.RateEntry;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -15,14 +22,17 @@ public class Converter
 		2018-11-18 at 17:00 UTC
 	 */
 
-	// Rates from EUR
-	private static final float eur = 1f;
-	private static final float sek = 10.28f;
-	private static final float usd = 1.14f;
-	private static final float gbp = 0.89f;
-	private static final float cny = 7.92f;
-	private static final float jpy = 128.79f;
-	private static final float krw = 1279.52f;
+	/*
+		Rates from EUR
+		(This will be replaced by refresh())
+	 */
+	private static float eur = 1f;
+	private static float sek = 10.28f;
+	private static float usd = 1.14f;
+	private static float gbp = 0.89f;
+	private static float cny = 7.92f;
+	private static float jpy = 128.79f;
+	private static float krw = 1279.52f;
 
 	public static float convert(ECurrencies from, ECurrencies to, float amount)
 	{
@@ -105,5 +115,51 @@ public class Converter
 
 		// Return new entries
 		return entries;
+	}
+
+	// Refreshes currency values
+	public static void refresh(Context context, RequestQueue requestQueue)
+	{
+		// URL to get new values from
+		String url = "http://data.fixer.io/api/latest?access_key=0ee863af5ead09bc864944ba302b10b3";
+
+		// Main request
+		StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response ->
+		{
+			try
+			{
+				// Try to parse response as JSON
+				JSONObject json = new JSONObject(response);
+
+				// All currency values
+				JSONObject rates = json.getJSONObject("rates");
+
+				// Set values
+				eur = (float) rates.getDouble("EUR");
+				sek = (float) rates.getDouble("SEK");
+				usd = (float) rates.getDouble("USD");
+				gbp = (float) rates.getDouble("GBP");
+				cny = (float) rates.getDouble("CNY");
+				jpy = (float) rates.getDouble("JPY");
+				krw = (float) rates.getDouble("KRW");
+			}
+			catch (JSONException e)
+			{
+				// A JSON parse failed
+				displayMessage(context, "JSON parse failed, using (some) old values");
+			}
+		}, error ->
+				// A HTTP Request failed
+				displayMessage(context, "Request failed, using old values"));
+
+		requestQueue.add(stringRequest);
+	}
+
+	private static void displayMessage(Context context, String message)
+	{
+		new AlertDialog.Builder(context)
+				.setMessage(message)
+				.setPositiveButton("OK", (dialogInterface, i) -> {})
+				.show();
 	}
 }

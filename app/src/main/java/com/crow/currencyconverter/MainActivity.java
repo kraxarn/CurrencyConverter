@@ -10,6 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
 
+import com.android.volley.toolbox.Volley;
+import com.crow.currencyconverter.Class.Converter;
 import com.crow.currencyconverter.Class.TabPagerAdapter;
 
 public class MainActivity extends AppCompatActivity
@@ -68,5 +70,9 @@ public class MainActivity extends AppCompatActivity
 		// Update listeners to change active tab
 		viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 		tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+
+		// Update currency values
+		// TODO: Check a timestamp and only update if 24h> old
+		Converter.refresh(this, Volley.newRequestQueue(this));
 	}
 }
