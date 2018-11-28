@@ -153,7 +153,7 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 		ECurrencies toCurrency   = Converter.fromString(((Spinner) view.findViewById(R.id.spinner_currencies_alt)).getSelectedItem().toString());
 
 		// Update 'to' label
-		((TextView) view.findViewById(R.id.edit_amount_alt)).setText(String.format(Locale.getDefault(), "%.2f", Converter.convert(fromCurrency, toCurrency, fromAmount)));
+		((TextView) view.findViewById(R.id.edit_amount_alt)).setText(toNiceValue(Converter.convert(fromCurrency, toCurrency, fromAmount)));
 	}
 
 	// Highlights 'from amount'
@@ -161,6 +161,36 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 	{
 		if (getActivity() != null)
 			((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(view.findViewById(R.id.edit_amount), InputMethodManager.SHOW_IMPLICIT);
+	}
+
+	// Rounds and sets as a nicer value
+	private String toNiceValue(float value)
+	{
+		/*
+			1					=> 1
+			1,000				=> 1 k / 1 thousand
+			1,000,000			=> 1 M / 1 million
+			1,000,000,000		=> 1 G / 1 billion
+			1,000,000,000,000	=> 1 T / 1 trillion
+		 */
+
+		if (value > 1000000000000f)
+			return String.format(Locale.getDefault(), "%.2f T", value / 1000000000000f);
+
+		// Billion
+		if (value > 1000000000)
+			return String.format(Locale.getDefault(), "%.2f G", value / 1000000000);
+
+		// Million
+		if (value > 1000000)
+			return String.format(Locale.getDefault(), "%.2f M", value / 1000000);
+
+		// Thousand
+		if (value > 1000)
+			return String.format(Locale.getDefault(), "%.2f k", value / 1000);
+
+		// Less than a thousand
+		return String.format(Locale.getDefault(), "%.2f", value);
 	}
 
 	@Override
