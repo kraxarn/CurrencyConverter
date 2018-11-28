@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.crow.currencyconverter.Class.Converter;
 import com.crow.currencyconverter.Class.CountryLocator;
@@ -100,14 +101,14 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 		spinner0.setOnItemSelectedListener(spinnerListener);
 		spinner1.setOnItemSelectedListener(spinnerListener);
 
-		// Test Button
+		// Swap Button
 		view.findViewById(R.id.button_swap).setOnClickListener(v ->
 		{
 			// From widgets
 			EditText editAmount = view.findViewById(R.id.edit_amount);
 
 			// To widgets
-			EditText editAmountAlt = view.findViewById(R.id.edit_amount_alt);
+			TextView editAmountAlt = view.findViewById(R.id.edit_amount_alt);
 
 			// Save from values
 			String fromAmount = editAmount.getText().toString();
@@ -138,7 +139,7 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 		if (fromAmountString.isEmpty())
 		{
 			// Empty result
-			((EditText) view.findViewById(R.id.edit_amount_alt)).setText(null);
+			((TextView) view.findViewById(R.id.edit_amount_alt)).setText(null);
 
 			// Return since there's no need to convert it
 			return;
@@ -152,7 +153,7 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 		ECurrencies toCurrency   = Converter.fromString(((Spinner) view.findViewById(R.id.spinner_currencies_alt)).getSelectedItem().toString());
 
 		// Update 'to' label
-		((EditText) view.findViewById(R.id.edit_amount_alt)).setText(String.format(Locale.getDefault(), "%.2f", Converter.convert(fromCurrency, toCurrency, fromAmount)));
+		((TextView) view.findViewById(R.id.edit_amount_alt)).setText(String.format(Locale.getDefault(), "%.2f", Converter.convert(fromCurrency, toCurrency, fromAmount)));
 	}
 
 	// Highlights 'from amount'
