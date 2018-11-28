@@ -24,6 +24,7 @@ import com.crow.currencyconverter.Enums.ECurrencies;
 import com.crow.currencyconverter.Listener.LocationUpdatedListener;
 import com.crow.currencyconverter.R;
 
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 public class ConvertFragment extends Fragment implements LocationUpdatedListener
@@ -64,7 +65,9 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 		spinner1.setSelection(preferences.getInt("currency_to",   0));
 
 		// Set input listener
-		((EditText) view.findViewById(R.id.edit_amount)).addTextChangedListener(new TextWatcher()
+		EditText editAmount = view.findViewById(R.id.edit_amount);
+
+		editAmount.addTextChangedListener(new TextWatcher()
 		{
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after)
@@ -74,6 +77,34 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count)
 			{
+				String amountText = editAmount.getText().toString();
+
+				// Don't try parsing if empty
+				if (amountText.length() <= 0)
+					return;
+
+				// Parse
+				double amount = Double.parseDouble(amountText.replaceAll(",", ""));
+				DecimalFormat format = new DecimalFormat("#,###.##");
+				String formatted = format.format(amount);
+
+				// Fix . at the end
+				if (editAmount.getText().toString().endsWith("."))
+					formatted += ".";
+
+				// NumberFormat version
+				/*
+				NumberFormat formatter = NumberFormat.getInstance();
+				formatter.setGroupingUsed(true);
+				String formatted = formatter.format(amount);
+				*/
+
+				// Change if not already changed
+				if (!editAmount.getText().toString().equals(formatted))
+				{
+					editAmount.setText(formatted);
+					editAmount.setSelection(editAmount.length());
+				}
 			}
 
 			@Override
@@ -104,9 +135,6 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 		// Swap Button
 		view.findViewById(R.id.button_swap).setOnClickListener(v ->
 		{
-			// From widgets
-			EditText editAmount = view.findViewById(R.id.edit_amount);
-
 			// To widgets
 			TextView editAmountAlt = view.findViewById(R.id.edit_amount_alt);
 
@@ -146,7 +174,7 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 		}
 
 		// Get the amount 'from'
-		float fromAmount = Float.parseFloat(fromAmountString);
+		float fromAmount = Float.parseFloat(fromAmountString.replaceAll(",", ""));
 
 		// Get selected currencies
 		ECurrencies fromCurrency = Converter.fromString(((Spinner) view.findViewById(R.id.spinner_currencies)).getSelectedItem().toString());
