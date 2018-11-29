@@ -8,6 +8,7 @@
         <item name="android:windowBackground">@color/colorBackground</item>
     </style>
 
+    <!-- Disables default action bar so we can make our own -->
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
