@@ -34,11 +34,29 @@ public class Converter
 	private static float jpy = 128.79f;
 	private static float krw = 1279.52f;
 
+	// When we last updated currency values (timestamp)
+	private static long lastUpdate;
+
+	// Minutes delay (default off)
+	private static int minuteDelay = 0;
+
+	// For refreshing later from this class
+	private static RequestQueue requestQueue;
+
 	public static float convert(ECurrencies from, ECurrencies to, float amount)
 	{
 		// If they are the same, nothing as to be done
 		if (from == to)
 			return amount;
+
+		/*
+			Check if time to update currency
+			Because this is done in the background,
+			the app isn't slowed down
+			(Disabled if minuteDelay is 0)
+		 */
+		if (minuteDelay > 0 && System.currentTimeMillis() > lastUpdate + minuteDelay * 60000)
+			refresh(null, requestQueue);
 
 		// Base EUR
 		float base = from == ECurrencies.EUR ? amount : convertToEur(from, amount);
@@ -120,6 +138,9 @@ public class Converter
 	// Refreshes currency values
 	public static void refresh(Context context, RequestQueue requestQueue)
 	{
+		// Set request queue
+		Converter.requestQueue = requestQueue;
+
 		// URL to get new values from
 		String url = "http://data.fixer.io/api/latest?access_key=0ee863af5ead09bc864944ba302b10b3";
 
@@ -142,15 +163,22 @@ public class Converter
 				cny = (float) rates.getDouble("CNY");
 				jpy = (float) rates.getDouble("JPY");
 				krw = (float) rates.getDouble("KRW");
+
+				// Update last update
+				lastUpdate = System.currentTimeMillis();
 			}
 			catch (JSONException e)
 			{
 				// A JSON parse failed
-				displayMessage(context, "JSON parse failed, using (some) old values");
+				if (context != null)
+					displayMessage(context, "JSON parse failed, using (some) old values");
 			}
 		}, error ->
-				// A HTTP Request failed
-				displayMessage(context, "Request failed, using old values"));
+		{
+			// A HTTP Request failed
+			if (context != null)
+				displayMessage(context, "Request failed, using old values");
+		});
 
 		requestQueue.add(stringRequest);
 	}
@@ -161,5 +189,10 @@ public class Converter
 				.setMessage(message)
 				.setPositiveButton(context.getString(R.string.generic_ok), (dialogInterface, i) -> {})
 				.show();
+	}
+
+	public static void setMinuteDelay(int minutes)
+	{
+		minuteDelay = minutes;
 	}
 }

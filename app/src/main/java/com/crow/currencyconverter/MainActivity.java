@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity
 	 */
 	SharedPreferences preferences;
 
+	TabPagerAdapter pagerAdapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity
 		setSupportActionBar(toolbar);
 
 		// Create adapter to return a fragment for each tab
-		TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
+		pagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
 
 		// Set up the ViewPager with the tab adapter (tab content)
 		ViewPager viewPager = findViewById(R.id.container);
@@ -93,11 +95,32 @@ public class MainActivity extends AppCompatActivity
 		RequestQueue requestQueue = Volley.newRequestQueue(this);
 
 		// Update currency values
-		// TODO: Check a timestamp and only update if 24h> old
 		Converter.refresh(this, requestQueue);
 
+		// Check if should auto update
+		if (preferences.getBoolean("auto_refresh", true))
+			Converter.setMinuteDelay(getMinutesFromPreference(preferences.getInt("auto_refresh_delay", 0)));
+
 		// Update country location if set
-		CountryLocator.refresh(requestQueue);
+		if (preferences.getBoolean("location_currency", true))
+			CountryLocator.refresh(requestQueue);
+	}
+
+	private int getMinutesFromPreference(int option)
+	{
+		switch (option)
+		{
+			// 1 minute
+			case 0: return 1;
+
+			// 1 hour
+			case 1: return 60;
+
+			// 1 day
+			case 2: return 1440;
+
+			default: return 0;
+		}
 	}
 
 	@Override
@@ -165,6 +188,9 @@ public class MainActivity extends AppCompatActivity
 
 						// Save to file
 						editor.apply();
+
+						// Notify preferences changed
+						pagerAdapter.onPreferenceUpdated();
 					})
 					.setNegativeButton(getString(R.string.generic_cancel), (dialogInterface, i) -> {
 						// Ignore if cancel was pressed
