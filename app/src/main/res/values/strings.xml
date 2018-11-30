@@ -53,6 +53,9 @@
     <!-- Generic cancel -->
     <string name="generic_cancel">Cancel</string>
 
+    <!-- Generic OK -->
+    <string name="generic_ok">OK</string>
+
     <!-- Setting: Format "from" amount -->
     <string name="setting_format_from_title">Format &quot;from&quot; amount</string>
     <string name="setting_format_from_info">Format and put a comma between every 3 numbers</string>

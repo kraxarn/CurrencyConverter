@@ -159,7 +159,7 @@ public class Converter
 	{
 		new AlertDialog.Builder(context)
 				.setMessage(message)
-				.setPositiveButton("OK", (dialogInterface, i) -> {})
+				.setPositiveButton(context.getString(R.string.generic_ok), (dialogInterface, i) -> {})
 				.show();
 	}
 }
