@@ -92,13 +92,6 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 				if (editAmount.getText().toString().endsWith("."))
 					formatted += ".";
 
-				// NumberFormat version
-				/*
-				NumberFormat formatter = NumberFormat.getInstance();
-				formatter.setGroupingUsed(true);
-				String formatted = formatter.format(amount);
-				*/
-
 				// Change if not already changed
 				if (!editAmount.getText().toString().equals(formatted))
 				{
