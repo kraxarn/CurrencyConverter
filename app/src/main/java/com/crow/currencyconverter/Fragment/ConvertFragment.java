@@ -33,6 +33,11 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 
 	private View view;
 
+	// Preference related
+	private boolean prefFormatFrom;
+	private boolean prefFormatTo;
+	private boolean prefUseSi;
+
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
@@ -41,6 +46,9 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 
 		// Get preferences
 		preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+		// Update preferences
+		updatePrefs();
 
 		// Simple error checking and to get rid of warnings
 		if (getContext() == null)
@@ -77,6 +85,10 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count)
 			{
+				// Ignore if set not to format
+				if (!prefFormatFrom)
+					return;
+
 				String amountText = editAmount.getText().toString();
 
 				// Don't try parsing if empty
@@ -195,20 +207,25 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 			1,000,000,000,000	=> 1 T / 1 trillion
 		 */
 
+		// Check if we shouldn't format
+		if (!prefFormatTo)
+			return String.format(Locale.getDefault(), "%.2f", value);
+
+		// Trillion
 		if (value > 1000000000000f)
-			return String.format(Locale.getDefault(), "%.2f T", value / 1000000000000f);
+			return String.format(Locale.getDefault(), "%.2f %s", value / 1000000000000f, prefUseSi ? "T" : "trillion");
 
 		// Billion
 		if (value > 1000000000)
-			return String.format(Locale.getDefault(), "%.2f G", value / 1000000000);
+			return String.format(Locale.getDefault(), "%.2f %s", value / 1000000000, prefUseSi ? "G" : "billion");
 
 		// Million
 		if (value > 1000000)
-			return String.format(Locale.getDefault(), "%.2f M", value / 1000000);
+			return String.format(Locale.getDefault(), "%.2f %s", value / 1000000, prefUseSi ? "M" : "million");
 
 		// Thousand
 		if (value > 1000)
-			return String.format(Locale.getDefault(), "%.2f k", value / 1000);
+			return String.format(Locale.getDefault(), "%.2f %s", value / 1000, prefUseSi ? "k" : "thousand");
 
 		// Less than a thousand
 		return String.format(Locale.getDefault(), "%.2f", value);
@@ -234,5 +251,19 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 	public void onSetCurrency(ECurrencies currency)
 	{
 		((Spinner) view.findViewById(R.id.spinner_currencies)).setSelection(currency.ordinal());
+	}
+
+	public void updatePrefs()
+	{
+		// Just to be sure we don't crash
+		if (preferences == null)
+			preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+		prefFormatFrom = preferences.getBoolean("format_from", true);
+		prefFormatTo   = preferences.getBoolean("format_to",   true);
+		prefUseSi      = preferences.getBoolean("use_si",      true);
+
+		// Update some values at least
+		update();
 	}
 }

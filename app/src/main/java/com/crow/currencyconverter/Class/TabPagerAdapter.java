@@ -49,4 +49,9 @@ public class TabPagerAdapter extends FragmentPagerAdapter
 		if (i == 0)
 			convertFragment.focusAmount();
 	}
+
+	public void onPreferenceUpdated()
+	{
+		convertFragment.updatePrefs();
+	}
 }
