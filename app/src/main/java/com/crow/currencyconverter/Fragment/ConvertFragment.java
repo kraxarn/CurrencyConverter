@@ -159,6 +159,14 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 		// Add country event
 		CountryLocator.addListener(this);
 
+		// Set preference from country locator if set to
+		if (preferences.getBoolean("location_currency", true))
+		{
+			ECurrencies country = CountryLocator.getCurrency();
+			if (!country.name().equals("??"))
+				onSetCurrency(country);
+		}
+
 		return view;
 	}
 

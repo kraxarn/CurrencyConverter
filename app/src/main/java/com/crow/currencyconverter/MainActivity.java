@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity
 		RequestQueue requestQueue = Volley.newRequestQueue(this);
 
 		// Update currency values
-		Converter.load(PreferenceManager.getDefaultSharedPreferences(this));
+		Converter.load(preferences);
 		Converter.refresh(this, requestQueue);
 
 		// Check if should auto update
@@ -104,7 +104,10 @@ public class MainActivity extends AppCompatActivity
 
 		// Update country location if set
 		if (preferences.getBoolean("location_currency", true))
-			CountryLocator.refresh(requestQueue);
+		{
+			CountryLocator.load(preferences);
+			CountryLocator.refresh(this, requestQueue);
+		}
 	}
 
 	private int getMinutesFromPreference(int option)

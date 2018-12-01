@@ -1,5 +1,8 @@
 package com.crow.currencyconverter.Class;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -15,7 +18,7 @@ import java.util.ArrayList;
 
 public class CountryLocator
 {
-	private static String country = "AA";
+	private static String country;
 
 	private static ArrayList<LocationUpdatedListener> listeners;
 
@@ -34,7 +37,25 @@ public class CountryLocator
 		}
 	}
 
-	public static void refresh(RequestQueue requestQueue)
+	// Loads values from cache
+	public static void load(SharedPreferences preferences)
+	{
+		country = preferences.getString("cache_country", "??");
+	}
+
+	private static void save(SharedPreferences preferences)
+	{
+		// Create editor
+		SharedPreferences.Editor editor = preferences.edit();
+
+		// Save new value
+		editor.putString("cache_country", country);
+
+		// Save
+		editor.apply();
+	}
+
+	public static void refresh(Context context, RequestQueue requestQueue)
 	{
 		StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://ipinfo.io/json", response ->
 		{
@@ -52,6 +73,9 @@ public class CountryLocator
 					for (LocationUpdatedListener listener : listeners)
 						listener.onSetCurrency(getCurrency());
 				}
+
+				// Save to preferences
+				save(PreferenceManager.getDefaultSharedPreferences(context));
 			}
 			catch (JSONException e)
 			{
