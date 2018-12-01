@@ -2,6 +2,8 @@ package com.crow.currencyconverter.Class;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,21 +20,16 @@ import java.util.ArrayList;
 public class Converter
 {
 	/*
-		Updated
-		2018-11-18 at 17:00 UTC
-	 */
-
-	/*
 		Rates from EUR
-		(This will be replaced by refresh())
+		These get set from load() and/or refresh()
 	 */
-	private static float eur = 1f;
-	private static float sek = 10.28f;
-	private static float usd = 1.14f;
-	private static float gbp = 0.89f;
-	private static float cny = 7.92f;
-	private static float jpy = 128.79f;
-	private static float krw = 1279.52f;
+	private static float eur;
+	private static float sek;
+	private static float usd;
+	private static float gbp;
+	private static float cny;
+	private static float jpy;
+	private static float krw;
 
 	// When we last updated currency values (timestamp)
 	private static long lastUpdate;
@@ -135,6 +132,38 @@ public class Converter
 		return entries;
 	}
 
+	// Loads values from cache
+	public static void load(SharedPreferences preferences)
+	{
+		// Default values were last updated on 2018-11-18 at 17:00 UTC
+
+		eur = preferences.getFloat("cache_eur", 1f);
+		sek = preferences.getFloat("cache_sek", 10.28f);
+		usd = preferences.getFloat("cache_usd", 1.14f);
+		gbp = preferences.getFloat("cache_gbp", 0.89f);
+		cny = preferences.getFloat("cache_cny", 7.92f);
+		jpy = preferences.getFloat("cache_jpy", 128.79f);
+		krw = preferences.getFloat("cache_krw", 1279.52f);
+	}
+
+	private static void save(SharedPreferences preferences)
+	{
+		// Create editor
+		SharedPreferences.Editor editor = preferences.edit();
+
+		// Save new values
+		editor.putFloat("cache_eur", eur);
+		editor.putFloat("cache_sek", sek);
+		editor.putFloat("cache_usd", usd);
+		editor.putFloat("cache_gbp", gbp);
+		editor.putFloat("cache_cny", cny);
+		editor.putFloat("cache_jpy", jpy);
+		editor.putFloat("cache_krw", krw);
+
+		// Save
+		editor.apply();
+	}
+
 	// Refreshes currency values
 	public static void refresh(Context context, RequestQueue requestQueue)
 	{
@@ -166,6 +195,9 @@ public class Converter
 
 				// Update last update
 				lastUpdate = System.currentTimeMillis();
+
+				// Save new values to cache
+				save(PreferenceManager.getDefaultSharedPreferences(context));
 			}
 			catch (JSONException e)
 			{

@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity
 		RequestQueue requestQueue = Volley.newRequestQueue(this);
 
 		// Update currency values
+		Converter.load(PreferenceManager.getDefaultSharedPreferences(this));
 		Converter.refresh(this, requestQueue);
 
 		// Check if should auto update
