@@ -140,20 +140,24 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 		// Swap Button
 		view.findViewById(R.id.button_swap).setOnClickListener(v ->
 		{
-			// To widgets
 			TextView editAmountAlt = view.findViewById(R.id.edit_amount_alt);
 
-			// Save from values
-			String fromAmount = editAmount.getText().toString();
+			// Save 'to' value temporarily
+			String toValue = editAmountAlt.getText().toString();
+
+			// Swap spinner values
 			int fromCurrency  = spinner0.getSelectedItemPosition();
-
-			// Replace from with to
-			editAmount.setText(editAmountAlt.getText());
 			spinner0.setSelection(spinner1.getSelectedItemPosition());
-
-			/// Replace to with old from
-			editAmountAlt.setText(fromAmount);
 			spinner1.setSelection(fromCurrency);
+
+			/*
+				Replace 'from' with old value of 'to'
+				This will also update 'to'
+			 */
+			editAmount.setText(toValue);
+
+			// Set cursor position
+			editAmount.setSelection(editAmount.length());
 		});
 
 		// Add country event
