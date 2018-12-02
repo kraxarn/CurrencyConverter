@@ -154,7 +154,7 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 				Replace 'from' with old value of 'to'
 				This will also update 'to'
 			 */
-			editAmount.setText(toValue);
+			editAmount.setText(String.format(Locale.getDefault(), "%.2f", fromNiceValue(toValue)));
 
 			// Set cursor position
 			editAmount.setSelection(editAmount.length());
@@ -172,6 +172,47 @@ public class ConvertFragment extends Fragment implements LocationUpdatedListener
 		}
 
 		return view;
+	}
+
+	// "de-formats" a (to) value, like 13.37 k etc.
+	private float fromNiceValue(String value)
+	{
+		// Get the whole string
+		String[] amounts = value.replaceAll(",", "").split(" ");
+
+		// If nothing else to format, return
+		if (amounts.length < 2)
+			return Float.parseFloat(value);
+
+		// The first part is the actual number
+		float num = Float.parseFloat(amounts[0]);
+
+		// Then get what to with it
+		switch (amounts[1])
+		{
+			case "k":
+			case "thousand":
+				num *= 1000;
+				break;
+
+			case "M":
+			case "million":
+				num *= 1000000;
+				break;
+
+			case "G":
+			case "billion":
+				num *= 1000000000;
+				break;
+
+			case "T":
+			case "trillion":
+				num *= 1000000000000f;
+				break;
+		}
+
+		// Return it
+		return num;
 	}
 
 	// Update the currency values
