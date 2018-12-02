@@ -32,9 +32,9 @@ public class MainActivity extends AppCompatActivity
 		All preferences are enabled by default
 		Auto refresh delay is 1 minute by default
 	 */
-	SharedPreferences preferences;
+	private SharedPreferences preferences;
 
-	TabPagerAdapter pagerAdapter;
+	private TabPagerAdapter pagerAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
