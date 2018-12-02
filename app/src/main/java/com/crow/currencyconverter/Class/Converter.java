@@ -197,7 +197,8 @@ public class Converter
 				lastUpdate = System.currentTimeMillis();
 
 				// Save new values to cache
-				save(PreferenceManager.getDefaultSharedPreferences(context));
+				if (context != null)
+					save(PreferenceManager.getDefaultSharedPreferences(context));
 			}
 			catch (JSONException e)
 			{

@@ -75,7 +75,8 @@ public class CountryLocator
 				}
 
 				// Save to preferences
-				save(PreferenceManager.getDefaultSharedPreferences(context));
+				if (context != null)
+					save(PreferenceManager.getDefaultSharedPreferences(context));
 			}
 			catch (JSONException e)
 			{
